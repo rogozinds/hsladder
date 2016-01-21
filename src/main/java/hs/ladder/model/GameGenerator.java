@@ -14,7 +14,7 @@ public class GameGenerator {
 
     private static GameResult simulateGameResult(double winRate) {
         Random rand = new Random();
-        int winRateInPercent = (int) winRate * 100;
+        int winRateInPercent =(int) (winRate * 100);
         int r = rand.nextInt(100);
 
         if (r < winRateInPercent) {

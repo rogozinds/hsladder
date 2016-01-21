@@ -7,6 +7,7 @@ import hs.ladder.model.GameResult;
 import hs.ladder.model.LadderSimulator;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LadderTest {
@@ -28,7 +29,7 @@ public class LadderTest {
     @Test
     public void test10WinRang5() {
         int currentRang = 20;
-        int expectedRang = 17;
+        int expectedRang = 18;
         GameResult[] results = GameGenerator.generate(5, 1.0f);
         LadderSimulator sim = new LadderSimulator();
         int newRang = sim.calc(currentRang, results);
@@ -72,9 +73,9 @@ public class LadderTest {
     @Test
     public void test6WinLoss() {
         int currentRang = 20;
-        int expectedRang = 16;
+        int expectedRang = 18;
         GameResult[] results = { WIN, WIN, WIN, WIN, WIN, WIN, LOOSE, LOOSE,
-                WIN, WIN };
+                WIN, WIN ,LOOSE,LOOSE};
         LadderSimulator sim = new LadderSimulator();
         int newRang = sim.calc(currentRang, results);
 
@@ -86,9 +87,37 @@ public class LadderTest {
         int currentRang = 20;
         int expectedRang = 17;
         LadderSimulator sim = new LadderSimulator();
+        int nGames = sim.calcGames(currentRang, expectedRang, 1.0f, 1);
+        Assert.assertEquals(6, nGames);
+
+    }
+    
+    @Test
+    public void test100WinRate() {
+        int currentRang = 25;
+        int expectedRang = 1;
+        LadderSimulator sim = new LadderSimulator();
         int nGames = sim.calcGames(currentRang, expectedRang, 1.0f);
+        System.out.println(nGames);
+        Assert.assertEquals(45, nGames);
 
-        Assert.assertEquals(5, nGames);
+    }
+    @Test
+    public void test60WinRate() {
+        int currentRang = 25;
+        int expectedRang = 1;
+        double winRate=0.61;
+        
+        int intMin=440;
+        int intMax=460;
+        LadderSimulator sim = new LadderSimulator();
+        int nGames = sim.calcGames(currentRang, expectedRang, winRate);
+        System.out.println(nGames);
+        Assert.assertTrue("nGames = "+nGames,inInterval(nGames,intMin,intMax));
 
+    }
+    
+    private boolean inInterval(int value, int min,int max) {
+    	return (value>= min && value<=max);
     }
 }
